@@ -4,8 +4,8 @@ socket.on('connect', function() {
 
   // eg custom event
   socket.emit('createMessage', {
-    to: 'someone',
-    message: 'hello world',
+    from: 'someone',
+    text: 'hello world',
   });
 });
 
