@@ -11,18 +11,26 @@ const io = socketIO(server);
 
 app.use(express.static(publicPath));
 io.on('connection', (socket) => {
-  console.log('new user connected');
+  socket.emit('newMessage', {
+    from: 'Admin',
+    message: 'welcome!',
+  });
+  socket.broadcast.emit('newMessage', {
+    from: 'Admin',
+    message: 'new user joined!',
+  });
+
 
   socket.on('disconnect', () => {
     console.log('user was disconnected');
   });
 
   socket.on('createMessage', (message) => {
-    console.log('created a message', message);
+
     // broadcasts to all connections
-    io.emit('newMessage', {
+    socket.broadcast.emit('newMessage', {
       ...message,
-      createdAt: new Date(),
+      createdAt: new Date().getTime(),
     });
   });
 });
