@@ -22,10 +22,15 @@ io.on('connection', (socket) => {
     console.log('user was disconnected');
   });
 
-  socket.on('createMessage', (message) => {
+  socket.on('createMessage', (message, callback) => {
+    if (callback && typeof(callback) === 'function') {
+      callback({
+        confirmation: true,
+      });
+    }
 
     // broadcasts to all connections
-    socket.broadcast.emit('newMessage', generateMessage(message.from, message.text));
+    io.emit('newMessage', generateMessage(message.from, message.text));
   });
 });
 
