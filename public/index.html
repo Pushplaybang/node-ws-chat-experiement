@@ -3,17 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Woop</title>
+    <link rel="stylesheet" href="/css/index.css">
 </head>
-<body>
-    <div class="wrap">
-        <h1>Silly Chat</h1>
-        <ol id="messages"></ol>
-
-        <form id="message-form">
-            <input name="message" placeholder="New Message" type="text">
-            <button type="submit">Send -></button>
-        </form>
-        <button type="buttton" id="send-location">Send Location -></button>
+<body class="chat">
+    <div class="chat__sidebar">
+        <h3>Chatters</h3>
+        <div id="users"></div>
+    </div>
+    <div class="chat__main">
+        <ol id="messages" class="chat__messages"></ol>
+        <div class="chat__footer">
+            <form id="message-form">
+                <input name="message" placeholder="New Message" type="text" autocomplete="off" autofocus>
+                <button type="submit">Send -></button>
+            </form>
+            <button type="buttton" id="send-location">Send Location -></button>
+        </div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>

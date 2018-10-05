@@ -36,7 +36,7 @@ $(document).ready(function() {
       from: 'me',
       text: $('[name=message]').val(),
     }, (result) => {
-      console.log('got it!', result);
+      $('[name=message]').val('')
     });
   })
 
@@ -46,13 +46,17 @@ $(document).ready(function() {
       return alert('geolocation not available');
     }
 
+    locationButton.attr('disabled', true).text('sending...');
+
     navigator.geolocation.getCurrentPosition(function(location) {
+      locationButton.removeAttr('disabled').text('Send Location ->');
       socket.emit('createLocationMessage', {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
-      })
+      });
     }, function() {
-      alert('cannot get current location')
+      locationButton.removeAttr('disabled').text('Send Location ->');
+      alert('cannot get current location');
     })
   })
 });
