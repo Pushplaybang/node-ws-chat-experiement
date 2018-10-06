@@ -14,8 +14,6 @@ const io = socketIO(server);
 
 app.use(express.static(publicPath));
 io.on('connection', (socket) => {
-  socket.emit('newMessage',generateMessage('Admin', 'welcome!'));
-  socket.broadcast.emit('newMessage', generateMessage('Admin',  'new user joined!'));
 
   socket.on('join', function(params, callback) {
     const { name, room } = params;
@@ -23,7 +21,8 @@ io.on('connection', (socket) => {
       return callback(true);
     }
 
-
+    socket.emit('newMessage',generateMessage('System', `welcome ${name}!`));
+    socket.broadcast.to(room).emit('newMessage', generateMessage('System',  `new user ${name} joined ${room}!`));
   });
 
   socket.on('disconnect', () => {
