@@ -12,7 +12,14 @@ class Users {
   }
 
   removeUser(id) {
+    const user = this.getUser(id);
+    if (!user) {
+      return;
+    }
+
     this.users = this.users.filter(user => user.id !== id);
+
+    return user;
   }
 
   list(room) {
