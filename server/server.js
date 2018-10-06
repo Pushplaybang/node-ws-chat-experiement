@@ -3,8 +3,8 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 
-  const { generateMessage, generateLocationMessage } = require('./utils/message');
-
+const { generateMessage, generateLocationMessage } = require('./utils/message');
+const { isString } = require('./utils/validation');
 
 const publicPath = path.join(__dirname, '../public');
 
@@ -17,6 +17,14 @@ io.on('connection', (socket) => {
   socket.emit('newMessage',generateMessage('Admin', 'welcome!'));
   socket.broadcast.emit('newMessage', generateMessage('Admin',  'new user joined!'));
 
+  socket.on('join', function(params, callback) {
+    const { name, room } = params;
+    if (!isString(name) || !isString(room)) {
+      return callback(true);
+    }
+
+
+  });
 
   socket.on('disconnect', () => {
     console.log('user was disconnected');
