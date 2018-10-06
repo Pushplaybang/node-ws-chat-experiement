@@ -28,11 +28,6 @@ io.on('connection', (socket) => {
     socket.join(room);
     users.addUser({id: socket.id, name, room });
 
-    console.log('all: ', users.users);
-    console.log('room: ', room);
-    console.log('name: ', name);
-    console.log('room users: ', users.list(room));
-
     io.to(room).emit('updateUserList', users.list(room));
     socket.emit('newMessage',generateMessage('System', `welcome ${name}!`));
     socket.broadcast.to(room).emit('newMessage', generateMessage('System',  `new user ${name} joined ${room}!`));
