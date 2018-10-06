@@ -47,18 +47,23 @@ io.on('connection', (socket) => {
   });
 
   socket.on('createMessage', (message, callback) => {
+    // handle error
     if (callback && typeof(callback) === 'function') {
       callback({
         confirmation: true,
       });
     }
 
+    const user = users.getUser(socket.id);
+
     // broadcasts to all connections
-    io.emit('newMessage', generateMessage(message.from, message.text));
+    io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
   });
 
   socket.on('createLocationMessage', (message) => {
-    io.emit('newLocationMessage', generateLocationMessage('someone', message.latitude, message.longitude))
+    const user = users.getUser(socket.id);
+
+    io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, message.latitude, message.longitude))
   })
 });
 
